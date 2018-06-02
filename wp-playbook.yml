@@ -1,0 +1,21 @@
+---
+- hosts: wordpress
+  become: true
+  tasks:
+    - name: Install nginx
+      apt: name=nginx state=latest
+    - name: Ensure nginx is running and enabled
+      service: name=nginx state=started enabled=yes
+    - name: Configure NGINX
+      copy:
+          src: "{{ item.src }}"
+          dest: "{{ item.dest }}"
+      with_items:
+        - src: "./configs/nginx.conf"
+          dest: "/etc/nginx/nginx.conf"
+        - src: "./configs/default"
+          dest: "/etc/nginx/sites-available/default"
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted
