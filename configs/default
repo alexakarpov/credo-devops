@@ -18,8 +18,19 @@
 
 # Default server configuration
 #
-server {
 
+# forward http to https
+server {
+        listen 80;
+        listen [::]:80;
+        server_name next.credo.press;
+
+        if ($http_x_forwarded_proto = "http") {
+           return 301 https://$server_name$request_uri;
+        }
+}
+
+server {
 	# SSL configuration
 	#
 	listen 443 ssl default_server;
@@ -42,7 +53,6 @@ server {
 	index index.php;
 
 	server_name next.credo.press;
-#	rewrite ^/(.*)$ http://next.credo.press/$1 permanent;
 
 	location / {
 		# First attempt to serve request as file, then
@@ -69,8 +79,8 @@ server {
 	#	deny all;
 	#}
 
-    ssl_certificate /etc/letsencrypt/live/next.credo.press/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/next.credo.press/privkey.pem; # managed by Certbot
+        ssl_certificate /etc/letsencrypt/live/next.credo.press/fullchain.pem; # managed by Certbot
+        ssl_certificate_key /etc/letsencrypt/live/next.credo.press/privkey.pem; # managed by Certbot
 }
 
 # Virtual Host configuration for example.com
@@ -91,18 +101,3 @@ server {
 #		try_files $uri $uri/ =404;
 #	}
 #}
-
-server {
-    if ($host = next.credo.press) {
-        return 301 https://$host$request_uri;
-    } # managed by Certbot
-
-
-	listen 80 default_server;
-	listen [::]:80 default_server;
-
-	server_name next.credo.press;
-    return 404; # managed by Certbot
-
-
-}
