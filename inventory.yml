@@ -1,6 +1,9 @@
 [wordpress]
 next.credo.press
 
+[ppua]
+185.223.163.24
+
 [old]
 46.101.121.60 # credo.press
 46.101.242.120 # portal-credo.ru
