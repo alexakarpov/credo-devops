@@ -7,3 +7,11 @@ next.credo.press
 [old]
 46.101.121.60 # credo.press
 46.101.242.120 # portal-credo.ru
+
+[aws]
+35.183.54.202
+
+[aws:vars]
+ansible_user=ubuntu
+become_user=root
+ansible_ssh_private_key_file="/Users/akarpov/keypairs/ak_kp_1.pem"

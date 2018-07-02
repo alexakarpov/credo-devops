@@ -1,0 +1,23 @@
+---
+- hosts: aws
+  become: true
+  tasks:
+    - name: Install zsh
+      apt:
+        name: zsh
+        state: latest
+    - name: Install emacs
+      apt:
+        name: emacs24-nox
+        state: latest
+    - name: Add me
+      user:
+        name: akarpov
+        shell: /usr/bin/zsh
+        state: present
+        group: admin
+    - name: Add my public key
+      authorized_key:
+        user: akarpov
+        state: present
+        key: "{{ lookup('file', '/Users/akarpov/.ssh/id_rsa.pub') }}"

@@ -1,21 +1,21 @@
 ---
-- hosts: wordpress
+- hosts: ppua
   become: true
   tasks:
-    - name: Install nginx
-      apt: name=nginx state=latest
-    - name: Configure NGINX
+    - name: Install apache
+      apt: name=apache2 state=latest
+    - name: Configure Apache
       copy:
           src: "{{ item.src }}"
           dest: "{{ item.dest }}"
       with_items:
-        - src: "./configs/nginx.conf"
-          dest: "/etc/nginx/nginx.conf"
-        - src: "./configs/default"
-          dest: "/etc/nginx/sites-available/default"
-    - name: Restart nginx
+        - src: "./configs/apache2.conf"
+          dest: "/etc/apache2/apache2.conf"
+        - src: "./configs/000-default.conf"
+          dest: "/etc/apache2/sites-available/000-default.conf"
+    - name: Restart apache
       service:
-        name: nginx
+        name: apache2
         state: restarted
-    - name: Ensure nginx is running and enabled
-      service: name=nginx state=started enabled=yes
+    - name: Ensure apache is running and enabled
+      service: name=apache2 state=started enabled=yes
